@@ -25,15 +25,15 @@
     margin-bottom: 10px;
   }
   
-    .box-area {
-    width: 950px;
+  .box-area {
+    width: 1000px;
     margin-top: 10px;
   }
   
   .left-box img {
     width: 160px;
   }
-
+  
   .left-box h2 {
     font-size: 30px;
     margin-top: 10px;
@@ -49,6 +49,9 @@
     margin-bottom: 0%;
   }
 
+  .right-box label {
+    font-size: 16px;
+  }
 
   ::placeholder {
     font-size: 16px;
@@ -70,13 +73,16 @@
     }
 
     .left-box img {
-      width: 100px;
+      width: 100%;
     }
 
     .right-box {
       padding: 20px;
     }
 
+    .right-box label {
+    font-size: 14px;
+    }
     ::placeholder {
       font-size: 14px;
     }
@@ -94,10 +100,13 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Portals </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#"> Student Portal </a></li>
+            <li><a class="dropdown-item" href="/student-portal"> Student Portal </a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#"> Admin Portal </a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/student-register"> Student Register </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"> About Us </a>
@@ -113,44 +122,21 @@
         <div class="featured-image mb-3">
           <img src="icct_logo.png" class="img-fluid" />
         </div>
-        <h2 style="color: #ececec;">Welcome to ICCTPortal</h2>
-        <p style="color: #ececec;">We are happy to have you back.</p>
       </div>
       <div class="col-md-6 right-box">
         <div class="row align-items-center">
           <div class="header-text mb-4">
-            <h2>Sign In</h2>
-            <p>
-              To access ICCT Portal, please make sure you meet the following
-              requirements:
-            </p>
+            <h2> Student Register</h2>
+            <p> To register ICCT Portal, please make sure you meet the following requirements: </p>
           </div>
-          <form action="/login" method="POST">
-            <div class="input-group mb-3">
-              <div class="input-group-text">@</div>
-              <input type="email" name="emailAddress" class="form-control bg-light fs-6"
-                placeholder="Email address / Student ID No." />
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-text bi bi-key-fill"></div>
-              <input type="password" name="password" class="form-control bg-light fs-6"
-                placeholder="Password" />
-            </div>
-            <div class="input-group mb-3">
-              <button class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">
-                LogIn
-              </button>
-            </div>
-          </form>
-          <div class="input-group mb-3">
-            <button class="btn btn-lg btn-light w-100 fs-6" disabled>
-              <img src="google_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
-            </button>
-          </div>
-          <div class="input-group mb-5 d-flex justify-content-between">
-          </div>
-          <div class="input-group">
-            <input class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;" type="button" onclick="location.href='/register';" value="Create Account">
+          <div>
+            <form action="/student-portal" method="PORT">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter First Name">
+                
+              </div>
+            </form>
           </div>
         </div>
       </div>

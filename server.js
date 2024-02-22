@@ -19,12 +19,12 @@ app.use(bodyParser.json());
 
 
 
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/student-portal', (req, res) => {
+    res.render("student-portal");
 });
 
-app.get("/register", (req, res) => {
-  res.render("register");
+app.get("/student-register", (req, res) => {
+  res.render("student-register");
 });
 
 app.listen(PORT, () => {
