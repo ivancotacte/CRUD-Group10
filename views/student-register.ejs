@@ -130,29 +130,39 @@
             <p> To register ICCT Portal, please make sure you meet the following requirements: </p>
           </div>
           <div>
-            <form action="/student-portal" method="PORT">
+            <form action="/student-register" method="POST">
               
               <div class="mb-2">
-                <label for="InputFirstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="InputFirstName" placeholder="Enter First Name">
+                <label for="labelFirstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter First Name">
               </div>
               <div class="mb-2">
-                <label for="InputMiddleName" class="form-label">Middle Name</label>
-                <input type="text" class="form-control" id="InputMiddleName" placeholder="Enter Middle Name">
+                <label for="labelMiddleName" class="form-label">Middle Name</label>
+                <input type="text" class="form-control" name="middleName" id="middleName" placeholder="Enter Middle Name">
               </div>
               <div class="mb-2">
-                <label for="InputLastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="InputLastName" placeholder="Enter Last Name">
+                <label for="labelLastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter Last Name">
+              </div>
+                            <div class="mb-2">
+                <label for="labelSuffux" class="form-label">Suffix</label>
+                <select name="suffix" id="suffix" class="form-control bg-light">
+                              <option value="">Suffix</option>
+                              <option value="jr">Jr</option>
+                              <option value="sr">Sr</option>
+                              <option value="II">II</option>
+                              <option value="III">III</option>
+                              <option value="IV">IV</option>
+                </select>
               </div>
               <div class="mb-2">
-                <label for="InputEmail" class="form-label">Email address</label>
-                <input type="text" class="form-control" id="InputEmail" placeholder="example@example.com">
+                <label for="labelEmailAddress" class="form-label">Email address</label>
+                <input type="text" class="form-control" name="emailAddress" id="emailAddress" placeholder="example@example.com">
               </div>
               <div class="mb-2">
-                <label for="InputContactNum" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="InputContactNum" placeholder="09********">
+                <label for="labelContactNum" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" name="contactNum" id="contactNum" placeholder="09********">
               </div>
-
 
 
               <div class="mb-2">

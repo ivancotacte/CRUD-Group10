@@ -27,6 +27,19 @@ app.get("/student-register", (req, res) => {
   res.render("student-register");
 });
 
+app.post("/student-register", (req, res) => {
+    const {
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      emailAddress,
+      contactNum,
+    } = req.body;
+
+    
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
