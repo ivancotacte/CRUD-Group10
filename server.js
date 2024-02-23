@@ -58,9 +58,21 @@ const isAuth = (req, res, next) => {
   }
 };
 
-app.get("/dashboard", isAuth, (req, res) => {
-  res.render("dashboard");
+app.get("/dashboard", isAuth, async (req, res) => {
+  try {
+    const emailAddress = req.session.emailAddress;
+
+    const user = await StudentModels.findOne({ emailAddress });
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    res.render("dashboard", { user });
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -82,10 +94,11 @@ app.post("/student-portal", async (req, res) => {
       return res
         .status(401)
         .render("student-portal", {
-          errors: [{ msg: "Invalid email or password" }],
-          csrfToken: req.csrfToken(),
+          errors: [{ msg: "Invalid email or password" }]
         });
     }
+
+  req.session.emailAddress = emailAddress;
 
   req.session.isAuth = true;
   res.redirect("/dashboard");
