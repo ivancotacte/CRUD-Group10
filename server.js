@@ -43,6 +43,26 @@ app.use(
 const StudentModels = require("./models/StudentModels");
 const { sendEmail } = require("./models/emailSender");
 
+const isAuth = (req, res, next) => {
+  if (req.session.isAuth) {
+    return next();
+  } else {
+    res.redirect("/student-portal");
+  }
+};
+
+app.get("/dashboard", isAuth, (req, res) => {
+  res.render("dashboard");
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) throw err;
+    return res.redirect("/student-portal");
+  });
+});
+
+
 app.get("/student-portal", (req, res) => {
   res.render("student-portal");
 });
