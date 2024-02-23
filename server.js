@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const generator = require("generate-password");
 const session = require("express-session");
+const bcrypt = require("bcryptjs");
+const helmet = require("helmet");
 const MongoDBSession = require("connect-mongodb-session")(session);
 require("dotenv").config();
 require("ejs");
@@ -23,19 +25,24 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(helmet());
+
+const sessionStore = new MongoDBSession({
+  uri: process.env.MONGO_URI,
+  collection: "sessions",
+  dbName: process.env.DB_NAME,
+});
 
 app.use(
   session({
-    secret: process.env.SECRET_KEY,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoDBSession({
-      uri: process.env.MONGO_URI,
-      collection: "sessions",
-      dbName: "db_ICCTPortal",
-    }),
+    store: sessionStore,
     cookie: {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     },
   }),
 );
@@ -64,20 +71,21 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/student-portal", (req, res) => {
-  res.render("student-portal");
+  res.render("student-portal", { errors: "" });
 });
 
 app.post("/student-portal", async (req, res) => {
   const { emailAddress, password } = req.body;
 
-  const user = await StudentModels.findOne({ emailAddress });
-  if (!user) {
-    return res.render("login", { errors: "Invalid email or password" });
-  }
-
-  if (user.password !== password) {
-    return res.render("login", { errors: "Invalid email or password" });
-  }
+    const user = await StudentModels.findOne({ emailAddress });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res
+        .status(401)
+        .render("student-portal", {
+          errors: [{ msg: "Invalid email or password" }],
+          csrfToken: req.csrfToken(),
+        });
+    }
 
   req.session.isAuth = true;
   res.redirect("/dashboard");
@@ -88,28 +96,28 @@ app.get("/student-register", (req, res) => {
 });
 
 app.post("/student-register", async (req, res) => {
-  const { firstName, middleName, lastName, suffix, emailAddress, contactNum } =
-    req.body;
+  const { firstName, middleName, lastName, suffix, emailAddress, contactNum } = req.body;
 
   let studentEmail = await StudentModels.findOne({ emailAddress });
   if (studentEmail) {
     return res.status(400).json({ message: "Email address already exists." });
   }
 
-  const password = generator.generate({ length: 15, numbers: true });
-
+  const randomPassword = generator.generate({ length: 15, numbers: true });
+  const hashedPassword = await bcrypt.hash(randomPassword, 10);
+  
   const studentInfo = new StudentModels({
     firstName,
     middleName,
     lastName,
     suffix,
-    password,
+    password: hashedPassword,
     userRole: "student",
     emailAddress,
     contactNum,
   });
 
-  sendEmail(emailAddress, password);
+  sendEmail(emailAddress, randomPassword);
 
   await studentInfo.save();
   res.redirect("/student-portal");
